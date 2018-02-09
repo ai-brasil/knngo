@@ -2,6 +2,10 @@
 
 Go library to machine learning classification problems
 
+## Warning
+
+This doc is in progress yet
+
 ## Getting Started
 
 Run at terminal``` go get -u github.com/ai-brasil/knngo  ```
@@ -23,8 +27,6 @@ knn.PrepareDataset(percent float32, records [][]string) (train [][]string, test 
 ```go
 knn.Classify(train [][]string, dataToPredict []string, k int) (result string) 
 ```
-
-Docs is in progress yet
 
 ## Example
 

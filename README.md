@@ -14,8 +14,13 @@ Run at terminal``` go get -u github.com/ai-brasil/knngo  ```
 
 ## Methods
 
-``` knn.PrepareDataset(percent float32, records [][]string) (train [][]string, test [][]string)  ```
-``` knn.Classify(train [][]string, dataToPredict []string, k int) (result string) ```
+```go 
+knn.PrepareDataset(percent float32, records [][]string) (train [][]string, test [][]string)  
+```
+
+```go
+knn.Classify(train [][]string, dataToPredict []string, k int) (result string) 
+```
 
 Docs is in progress yet
 

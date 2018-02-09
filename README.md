@@ -9,7 +9,9 @@ Run at terminal``` go get -u github.com/ai-brasil/knngo  ```
 ### Prerequisites
 
 1º: Yours class must be at last column at right side
+
 2º: current oly work with numbers
+
 3º: when you read your file (e.g. your .CSV file) don't worry to transform the type of your data to number, you can use the values as string.
 
 ## Methods

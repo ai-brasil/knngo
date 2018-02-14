@@ -5,6 +5,7 @@ Go library to machine learning classification problems
 ## Getting Started
 
 Run at terminal``` go get -u github.com/ai-brasil/knngo  ```
+
 Import the package```go import "github.com/italojs/knngo"   ```
 
 ### Prerequisites

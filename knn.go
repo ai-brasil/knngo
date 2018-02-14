@@ -1,12 +1,15 @@
 package knn
 
 import (
+	"sync"
+	"errors"
 	"math"
 	"sort"
 	"strconv"
 )
 
-var columClassIndex int
+// ColumnClassIndex is the index that is the class of your data(line) in dataset. By default it's be the first column of your dataset
+var ColumnClassIndex int
 
 func distinct(elements *[]string) (result []string) {
 	encountered := map[string]bool{}
@@ -52,12 +55,18 @@ func divideInPercent(records *[][]string, percent float32) (newRecords [][]strin
 	}
 	return
 }
-func euclideanDist(pi *[]string, qi *[]string) (result float64) {
+func euclideanDist(pi *[]string, qi *[]string) (result float64, err error) {
 	i := len(*pi) - 1
 
 	for i >= 0 {
-		pif, _ := strconv.ParseFloat((*pi)[i], 32)
-		qif, _ := strconv.ParseFloat((*qi)[i], 32)
+		pif, err := strconv.ParseFloat((*pi)[i], 32)
+		if err != nil {
+			return 0, err
+		}
+		qif, err := strconv.ParseFloat((*qi)[i], 32)
+		if err != nil {
+			return 0, err
+		}
 		result += math.Pow(pif-qif, 2)
 		i--
 	}
@@ -111,8 +120,9 @@ func getPredominantClass(knn *map[float64]string) (class string) {
 	}
 	return
 }
-//PrepareDataset divide a dataset in x percet to test and the rest get to test
-func PrepareDataset(percent float32, records [][]string) (train [][]string, test [][]string) {
+
+// PrepareDataset divide a dataset(records) in x percet to train and the rest data get to test
+func PrepareDataset(percent float32, records [][]string) (train [][]string, test [][]string, err error) {
 	column := getCollum(&records, len(records[0])-1)
 	classes := distinct(&column)
 	for i := range classes {
@@ -123,12 +133,16 @@ func PrepareDataset(percent float32, records [][]string) (train [][]string, test
 	}
 	return
 }
-//Classify is a method that run all knn algorithm  to predict the claass of a new data
-func Classify(train [][]string, dataToPredict []string, k int) (result string) {
+
+// Classify will predict a new data(not classificated yet) based in all you train data(already classificated)
+func Classify(trainData [][]string, dataToPredict []string, k int) (result string, err error) {
 	dists := make(map[float64]string)
-	for i := range train {
-		class := train[i][len(train[i])-1]
-		d := euclideanDist(&train[i], &dataToPredict)
+	for i := range trainData {
+		class := trainData[i][ColumnClassIndex]
+		d, err := euclideanDist(&trainData[i], &dataToPredict)
+		if err != nil {
+			return "Error: no class predicted", err
+		}
 		dists[d] = class
 	}
 	knn := getKnn(&dists, k)
@@ -136,3 +150,4 @@ func Classify(train [][]string, dataToPredict []string, k int) (result string) {
 
 	return
 }
+

@@ -1,15 +1,12 @@
 package knn
 
 import (
-	"sync"
-	"errors"
 	"math"
 	"sort"
 	"strconv"
 )
 
-// ColumnClassIndex is the index that is the class of your data(line) in dataset. By default it's be the first column of your dataset
-var ColumnClassIndex int
+var classIndex int
 
 func distinct(elements *[]string) (result []string) {
 	encountered := map[string]bool{}
@@ -56,7 +53,7 @@ func divideInPercent(records *[][]string, percent float32) (newRecords [][]strin
 	return
 }
 func euclideanDist(pi *[]string, qi *[]string) (result float64, err error) {
-	i := len(*pi) - 1
+	i := len(*pi) - 2
 
 	for i >= 0 {
 		pif, err := strconv.ParseFloat((*pi)[i], 32)
@@ -136,9 +133,10 @@ func PrepareDataset(percent float32, records [][]string) (train [][]string, test
 
 // Classify will predict a new data(not classificated yet) based in all you train data(already classificated)
 func Classify(trainData [][]string, dataToPredict []string, k int) (result string, err error) {
+	classIndex = len( trainData[0]) - 1
 	dists := make(map[float64]string)
 	for i := range trainData {
-		class := trainData[i][ColumnClassIndex]
+		class := trainData[i][classIndex]
 		d, err := euclideanDist(&trainData[i], &dataToPredict)
 		if err != nil {
 			return "Error: no class predicted", err

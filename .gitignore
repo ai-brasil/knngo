@@ -6,6 +6,7 @@
 
 #data folder
 datas/
+example/
 
 # Test binary, build with `go test -c`
 *.test

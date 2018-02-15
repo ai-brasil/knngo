@@ -133,7 +133,7 @@ func PrepareDataset(percent float32, records [][]string) (train [][]string, test
 
 // Classify will predict a new data(not classificated yet) based in all you train data(already classificated)
 func Classify(trainData [][]string, dataToPredict []string, k int) (result string, err error) {
-	classIndex = len( trainData[0]) - 1
+	classIndex = len(trainData[0]) - 1
 	dists := make(map[float64]string)
 	for i := range trainData {
 		class := trainData[i][classIndex]
@@ -148,4 +148,3 @@ func Classify(trainData [][]string, dataToPredict []string, k int) (result strin
 
 	return
 }
-
